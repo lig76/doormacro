@@ -1,0 +1,33 @@
+.doormacro:not(.whenClosed) .form-group.stacked.command[data-type="whenClosed"],
+.doormacro:not(.whenHidden) .form-group.stacked.command[data-type="whenHidden"],
+.doormacro:not(.whenLocked) .form-group.stacked.command[data-type="whenLocked"],
+.doormacro:not(.whenOpened) .form-group.stacked.command[data-type="whenOpened"],
+.doormacro:not(.whenRevealed) .form-group.stacked.command[data-type="whenRevealed"],
+.doormacro:not(.whenUnlocked) .form-group.stacked.command[data-type="whenUnlocked"],
+.doormacro:not(.whenOpened, .whenClosed, .whenLocked, .whenUnlocked, .whenHidden, .whenRevealed) footer.sheet-footer.flexrow {
+  display: none;
+}
+
+.doormacro .triggers {
+  display: inline-flex;
+  list-style-type: none;
+  gap: 0.5em;
+  justify-content: space-around;
+  padding: 0;
+  text-align: center;
+}
+
+.doormacro .triggers .trigger {
+  font-family: "Modesto Condensed";
+  font-size: 25px;
+}
+
+.doormacro.whenClosed .triggers .trigger[data-type="whenClosed"],
+.doormacro.whenHidden .triggers .trigger[data-type="whenHidden"],
+.doormacro.whenLocked .triggers .trigger[data-type="whenLocked"],
+.doormacro.whenOpened .triggers .trigger[data-type="whenOpened"],
+.doormacro.whenRevealed .triggers .trigger[data-type="whenRevealed"],
+.doormacro.whenUnlocked .triggers .trigger[data-type="whenUnlocked"],
+.doormacro .triggers .trigger:hover {
+  text-shadow: 0 0 14px red;
+}

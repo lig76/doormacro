@@ -1,0 +1,10 @@
+{
+  "DOORMACRO": {
+    "whenClosed": "When Closed",
+    "whenOpened": "When Opened",
+    "whenLocked": "When Locked",
+    "whenUnlocked": "When Unlocked",
+    "whenHidden": "When Hidden",
+    "whenRevealed": "When Revealed"
+  }
+}
