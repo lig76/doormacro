@@ -19,14 +19,8 @@ export function callMacro(wallDoc, whenWhat, { gmId, userId }) {
     ${script}
   })();`;
 
-  /**
-   * Either it should not necessarily be executed as GM, and the executor is you
-   * or it should be, and you are the first found GM.
-   */
-  const isMe = !asGM && game.user.id === userId;
-  const isGM = asGM && game.user.id === gmId;
-  if (!isMe && !isGM) return;
-
+  const id = asGM ? gmId : userId;
+  if (game.user.id !== id) return;
   const fn = Function("door", "scene", body);
   fn.call({}, wallDoc, wallDoc.parent);
 }

@@ -36,7 +36,7 @@ Hooks.on("preUpdateWall", (wallDoc, update, context, userId) => {
 });
 
 Hooks.on("updateWall", (wallDoc, update, context, userId) => {
-  const { gmId } = game.users.find(user => {
+  const { id: gmId } = game.users.find(user => {
     return user.active && user.isGM;
   }) ?? {};
   TRIGGERS.map(trigger => {
