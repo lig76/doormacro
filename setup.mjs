@@ -36,10 +36,12 @@ Hooks.on("preUpdateWall", (wallDoc, update, context, userId) => {
 });
 
 Hooks.on("updateWall", (wallDoc, update, context, userId) => {
-  if (game.user.id !== userId) return;
+  const { gmId } = game.users.find(user => {
+    return user.active && user.isGM;
+  }) ?? {};
   TRIGGERS.map(trigger => {
     const property = `${MODULE}.${wallDoc.id}.${trigger}`;
     const triggered = foundry.utils.getProperty(context, property);
-    if (triggered) callMacro(wallDoc, trigger);
+    if (triggered) callMacro(wallDoc, trigger, { gmId, userId });
   });
 });

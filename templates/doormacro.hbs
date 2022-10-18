@@ -19,9 +19,13 @@
 
   {{#each triggers as |trigger|}}
   <div class="form-group stacked command" data-type="{{trigger.type}}">
-    <label>
-      {{localize "Command"}}
-    </label>
+    <div class="command-line">
+      <label>{{localize "Command"}}</label>
+      <div class="as-gm">
+        <label>{{localize "DOORMACRO.AS_GM"}}</label>
+        <input type="checkbox" name="flags.doormacro.asGM.{{trigger.type}}" {{checked trigger.asGM}}>
+      </div>
+    </div>
     <textarea name="flags.doormacro.commands.{{trigger.type}}">{{trigger.script}}</textarea>
   </div>
   {{/each}}

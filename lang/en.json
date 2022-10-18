@@ -5,6 +5,7 @@
     "whenLocked": "When Locked",
     "whenUnlocked": "When Unlocked",
     "whenHidden": "When Hidden",
-    "whenRevealed": "When Revealed"
+    "whenRevealed": "When Revealed",
+    "AS_GM": "Execute as GM:"
   }
 }

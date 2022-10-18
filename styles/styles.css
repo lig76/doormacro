@@ -22,6 +22,13 @@
   font-size: 25px;
 }
 
+.doormacro .command-line,
+.doormacro .as-gm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .doormacro.whenClosed .triggers .trigger[data-type="whenClosed"],
 .doormacro.whenHidden .triggers .trigger[data-type="whenHidden"],
 .doormacro.whenLocked .triggers .trigger[data-type="whenLocked"],

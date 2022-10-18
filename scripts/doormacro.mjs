@@ -4,16 +4,31 @@ export function renderDoorMacroConfig(wallDocument) {
   new DoorMacroConfig(wallDocument, {}).render(true);
 }
 
-export function callMacro(wallDoc, whenWhat, context = {}) {
+/**
+ * Execute macros.
+ * @param wallDoc   The door.
+ * @param whenWhat  The trigger.
+ * @param gmId      The first active GM found.
+ * @param userId    The id of the user who changed the door.
+ */
+export function callMacro(wallDoc, whenWhat, { gmId, userId }) {
   const script = wallDoc.getFlag(MODULE, `commands.${whenWhat}`);
+  const asGM = wallDoc.getFlag(MODULE, `asGM.${whenWhat}`);
   if (!script) return;
-  const that = foundry.utils.mergeObject({ trigger: whenWhat }, context);
-
   const body = `(async()=>{
     ${script}
   })();`;
+
+  /**
+   * Either it should not necessarily be executed as GM, and the executor is you
+   * or it should be, and you are the first found GM.
+   */
+  const isMe = !asGM && game.user.id === userId;
+  const isGM = asGM && game.user.id === gmId;
+  if (!isMe && !isGM) return;
+
   const fn = Function("door", "scene", body);
-  fn.call(that, wallDoc, wallDoc.parent);
+  fn.call({}, wallDoc, wallDoc.parent);
 }
 
 export class DoorMacroConfig extends MacroConfig {
@@ -51,6 +66,7 @@ export class DoorMacroConfig extends MacroConfig {
       return {
         type: trigger,
         script: this.object.getFlag(MODULE, `commands.${trigger}`),
+        asGM: this.object.getFlag(MODULE, `asGM.${trigger}`),
         label: game.i18n.localize(`DOORMACRO.${trigger}`)
       }
     });
