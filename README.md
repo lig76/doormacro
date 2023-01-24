@@ -7,3 +7,5 @@ You can apply a macro to a door. You can trigger this macro when the door is ope
 
 Open a door's config and enter the macro editor placed in the header (door icon).
 If the macro needs to do things only a GM is allowed to do, like toggle lights for example, you can set the macro to be executed as GM. This will cause the macro to find the first active GM available and execute it as them. If not set to be executed as GM, the macro is executed as the user who changed the state of the door.
+
+In addition, there is now `WallDocument#callMacro(type="never", options={})`, which can be used to execute an arbitrary script embedded on the Door manually. The types are   "whenOpened", "whenClosed", "whenLocked", "whenUnlocked", "whenHidden", "whenRevealed", and "never", the last of which is never executed automatically.

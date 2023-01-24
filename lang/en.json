@@ -1,11 +1,10 @@
 {
-  "DOORMACRO": {
-    "whenClosed": "When Closed",
-    "whenOpened": "When Opened",
-    "whenLocked": "When Locked",
-    "whenUnlocked": "When Unlocked",
-    "whenHidden": "When Hidden",
-    "whenRevealed": "When Revealed",
-    "AS_GM": "Execute as GM:"
-  }
+  "DOORMACRO.whenClosed": "When Closed",
+  "DOORMACRO.whenOpened": "When Opened",
+  "DOORMACRO.whenLocked": "When Locked",
+  "DOORMACRO.whenUnlocked": "When Unlocked",
+  "DOORMACRO.whenHidden": "When Hidden",
+  "DOORMACRO.whenRevealed": "When Revealed",
+  "DOORMACRO.never": "Never Automatically",
+  "DOORMACRO.AS_GM": "Execute as GM:"
 }

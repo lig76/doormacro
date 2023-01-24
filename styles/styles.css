@@ -1,25 +1,10 @@
-.doormacro:not(.whenClosed) .form-group.stacked.command[data-type="whenClosed"],
-.doormacro:not(.whenHidden) .form-group.stacked.command[data-type="whenHidden"],
-.doormacro:not(.whenLocked) .form-group.stacked.command[data-type="whenLocked"],
-.doormacro:not(.whenOpened) .form-group.stacked.command[data-type="whenOpened"],
-.doormacro:not(.whenRevealed) .form-group.stacked.command[data-type="whenRevealed"],
-.doormacro:not(.whenUnlocked) .form-group.stacked.command[data-type="whenUnlocked"],
-.doormacro:not(.whenOpened, .whenClosed, .whenLocked, .whenUnlocked, .whenHidden, .whenRevealed) footer.sheet-footer.flexrow {
-  display: none;
+.macro-sheet.sheet .doormacro > .content-tabs {
+  flex: 1;
 }
 
-.doormacro .triggers {
-  display: inline-flex;
-  list-style-type: none;
-  gap: 0.5em;
-  justify-content: space-around;
-  padding: 0;
-  text-align: center;
-}
-
-.doormacro .triggers .trigger {
-  font-family: "Modesto Condensed";
-  font-size: 25px;
+.macro-sheet.sheet .doormacro .tab[data-tab],
+.macro-sheet.sheet .doormacro .tab[data-tab] > .form-group {
+  height: calc(100% - 5px);
 }
 
 .doormacro .command-line,
@@ -29,12 +14,10 @@
   align-items: center;
 }
 
-.doormacro.whenClosed .triggers .trigger[data-type="whenClosed"],
-.doormacro.whenHidden .triggers .trigger[data-type="whenHidden"],
-.doormacro.whenLocked .triggers .trigger[data-type="whenLocked"],
-.doormacro.whenOpened .triggers .trigger[data-type="whenOpened"],
-.doormacro.whenRevealed .triggers .trigger[data-type="whenRevealed"],
-.doormacro.whenUnlocked .triggers .trigger[data-type="whenUnlocked"],
-.doormacro .triggers .trigger:hover {
+form.doormacro > nav.sheet-tabs.tabs {
+  text-align: center;
+}
+
+form.doormacro > nav.sheet-tabs.tabs > .active {
   text-shadow: 0 0 14px red;
 }

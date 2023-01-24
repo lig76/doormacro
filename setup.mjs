@@ -13,6 +13,12 @@ Hooks.on("getWallConfigHeaderButtons", (config, buttons) => {
   });
 });
 
+Hooks.once("setup", () => {
+  WallDocument.prototype.callMacro = async function(type = "never", options = {}) {
+    return callMacro(this, type, options);
+  }
+});
+
 // save previous state of door.
 Hooks.on("preUpdateWall", (wallDoc, update, context, userId) => {
   const { WALL_DOOR_STATES: DS, WALL_DOOR_TYPES: DOOR } = CONST;

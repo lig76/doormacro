@@ -20,7 +20,7 @@ export function callMacro(wallDoc, whenWhat, { gmId, userId }) {
   })();`;
 
   const id = asGM ? gmId : userId;
-  if (game.user.id !== id) return;
+  if (game.user.id !== id && !!id) return;
   const fn = Function("door", "scene", body);
   fn.call({}, wallDoc, wallDoc.parent);
 }
@@ -34,23 +34,15 @@ export class DoorMacroConfig extends MacroConfig {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "modules/doormacro/templates/doormacro.hbs",
-      classes: ["macro-sheet", "sheet"]
+      classes: ["macro-sheet", "sheet", MODULE],
+      tabs: [{ navSelector: ".tabs", contentSelector: ".content-tabs", initial: "whenCreated" }],
+      height: 600,
+      width: 600
     });
   }
 
   get id() {
     return `doormacro-${this.object.id}`;
-  }
-
-  activateListeners(html) {
-    html[0].addEventListener("click", (event) => {
-      const trigger = event.target.closest(".doormacro .triggers .trigger");
-      if (!trigger) return;
-      const type = trigger.dataset.type;
-      const form = trigger.closest("form");
-      form.classList.remove(...TRIGGERS.filter(t => t !== type));
-      form.classList.add(type);
-    });
   }
 
   async getData() {
@@ -59,7 +51,7 @@ export class DoorMacroConfig extends MacroConfig {
     data.triggers = TRIGGERS.map(trigger => {
       return {
         type: trigger,
-        script: this.object.getFlag(MODULE, `commands.${trigger}`),
+        command: this.object.getFlag(MODULE, `commands.${trigger}`),
         asGM: this.object.getFlag(MODULE, `asGM.${trigger}`),
         label: game.i18n.localize(`DOORMACRO.${trigger}`)
       }
@@ -68,6 +60,14 @@ export class DoorMacroConfig extends MacroConfig {
   }
 
   async _updateObject(event, formData) {
+    for (const trigger of TRIGGERS) {
+      if (!formData[`flags.${MODULE}.commands.${trigger}`]) {
+        delete formData[`flags.${MODULE}.commands.${trigger}`];
+        delete formData[`flags.${MODULE}.asGM.${trigger}`];
+        formData[`flags.${MODULE}.commands.-=${trigger}`] = null;
+        formData[`flags.${MODULE}.asGM.-=${trigger}`] = null;
+      }
+    }
     return this.object.update(formData);
   }
 }

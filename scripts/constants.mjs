@@ -1,6 +1,10 @@
 export const MODULE = "doormacro";
 export const TRIGGERS = [
-  "whenOpened", "whenClosed",
-  "whenLocked", "whenUnlocked",
-  "whenHidden", "whenRevealed"
+  "whenOpened",
+  "whenClosed",
+  "whenLocked",
+  "whenUnlocked",
+  "whenHidden",
+  "whenRevealed",
+  "never"
 ];
