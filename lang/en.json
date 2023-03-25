@@ -1,10 +1,12 @@
 {
-  "DOORMACRO.whenClosed": "When Closed",
-  "DOORMACRO.whenOpened": "When Opened",
-  "DOORMACRO.whenLocked": "When Locked",
-  "DOORMACRO.whenUnlocked": "When Unlocked",
-  "DOORMACRO.whenHidden": "When Hidden",
-  "DOORMACRO.whenRevealed": "When Revealed",
+  "DOORMACRO.AS_GM": "Execute as GM:",
+  "DOORMACRO.AsGMTooltip": "Run this embedded script as if the first found GM client had executed it.",
+  "DOORMACRO.Door": "Door: {id}",
   "DOORMACRO.never": "Never Automatically",
-  "DOORMACRO.AS_GM": "Execute as GM:"
+  "DOORMACRO.whenClosed": "When Closed",
+  "DOORMACRO.whenHidden": "When Hidden",
+  "DOORMACRO.whenLocked": "When Locked",
+  "DOORMACRO.whenOpened": "When Opened",
+  "DOORMACRO.whenRevealed": "When Revealed",
+  "DOORMACRO.whenUnlocked": "When Unlocked"
 }

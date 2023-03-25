@@ -16,6 +16,7 @@
 
 form.doormacro > nav.sheet-tabs.tabs {
   text-align: center;
+  gap: 5px;
 }
 
 form.doormacro > nav.sheet-tabs.tabs > .active {
