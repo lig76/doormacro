@@ -1,9 +1,9 @@
-.macro-sheet.sheet .doormacro > .content-tabs {
+.doormacro .content-tabs {
   flex: 1;
 }
 
-.macro-sheet.sheet .doormacro .tab[data-tab],
-.macro-sheet.sheet .doormacro .tab[data-tab] > .form-group {
+.doormacro .tab[data-tab],
+.doormacro .tab[data-tab] .form-group {
   height: calc(100% - 5px);
 }
 
@@ -14,11 +14,11 @@
   align-items: center;
 }
 
-form.doormacro > nav.sheet-tabs.tabs {
+.doormacro .tabs {
   text-align: center;
   gap: 5px;
 }
 
-form.doormacro > nav.sheet-tabs.tabs > .active {
-  text-shadow: 0 0 14px red;
+.doormacro .trigger.active {
+  text-shadow: 0 0 8px var(--color-shadow-primary)
 }

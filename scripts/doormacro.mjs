@@ -3,27 +3,25 @@ import {MODULE, TRIGGERS} from "./constants.mjs";
 /**
  * Execute macros.
  * @param {WallDocument} wallDoc      The door.
- * @param {string} whenWhat           The trigger.
+ * @param {string} trigger            The trigger.
  * @param {object} context            An object of user ids.
  * @param {string} context.gmId       The first active GM found.
  * @param {string} context.userId     The id of the user who changed the door.
  */
-export function callMacro(wallDoc, whenWhat, {gmId, userId}) {
-  const script = wallDoc.getFlag(MODULE, `commands.${whenWhat}`);
-  const asGM = wallDoc.getFlag(MODULE, `asGM.${whenWhat}`);
-  if (!script) return;
+export function callMacro(wallDoc, trigger, {gmId, userId}) {
+  const data = wallDoc.flags[MODULE]?.[trigger] ?? {};
+  if (!data.script) return;
   const body = `(async()=>{
-    ${script}
+    ${data.script}
   })();`;
 
-  const id = asGM ? gmId : userId;
-  if (game.user.id !== id && !!id) return;
+  const id = data.asGM ? gmId : userId;
+  if ((game.user.id !== id) && !!id) return;
   const fn = Function("door", "scene", body);
-  fn.call({}, wallDoc, wallDoc.parent);
+  return fn.call({}, wallDoc, wallDoc.parent);
 }
 
 export class DoorMacroConfig extends MacroConfig {
-
   /** @override */
   constructor(wallDocument, options) {
     super(wallDocument, options);
@@ -35,7 +33,7 @@ export class DoorMacroConfig extends MacroConfig {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "modules/doormacro/templates/doormacro.hbs",
       classes: ["macro-sheet", "sheet", MODULE],
-      tabs: [{navSelector: ".tabs", contentSelector: ".content-tabs", initial: "whenCreated"}],
+      tabs: [{navSelector: ".tabs", contentSelector: ".content-tabs"}],
       height: 600,
       width: 600
     });
@@ -53,13 +51,13 @@ export class DoorMacroConfig extends MacroConfig {
   async getData() {
     const data = await super.getData();
     data.name = game.i18n.format("DOORMACRO.Door", {id: this.object.id});
-    const commands = this.object.flags[MODULE]?.commands ?? {};
-    const gms = this.object.flags[MODULE]?.asGM ?? {};
+    const dm = this.object.flags[MODULE] ?? {};
     data.triggers = TRIGGERS.map(trigger => {
+      const t = dm[trigger] ?? {};
       return {
         type: trigger,
-        command: commands[trigger],
-        asGM: gms[trigger],
+        command: t.command ?? "",
+        asGM: t.asGM,
         label: game.i18n.localize(`DOORMACRO.${trigger}`)
       }
     });
@@ -69,13 +67,18 @@ export class DoorMacroConfig extends MacroConfig {
   /** @override */
   async _updateObject(event, formData) {
     for (const trigger of TRIGGERS) {
-      if (!formData[`flags.${MODULE}.commands.${trigger}`]) {
-        delete formData[`flags.${MODULE}.commands.${trigger}`];
-        delete formData[`flags.${MODULE}.asGM.${trigger}`];
-        formData[`flags.${MODULE}.commands.-=${trigger}`] = null;
-        formData[`flags.${MODULE}.asGM.-=${trigger}`] = null;
+      if (!formData[`flags.${MODULE}.${trigger}.command`]) {
+        delete formData[`flags.${MODULE}.${trigger}`];
+        formData[`flags.${MODULE}.-=${trigger}`] = null;
       }
     }
     return this.object.update(formData);
+  }
+
+  /** @override */
+  _renderInner(data) {
+    const trigger = TRIGGERS.find(t => this.document.flags[MODULE]?.[t]?.command);
+    if (trigger) this._tabs[0].active = trigger;
+    return super._renderInner(data);
   }
 }

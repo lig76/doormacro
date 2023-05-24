@@ -3,13 +3,12 @@ import {callMacro, DoorMacroConfig} from "./scripts/doormacro.mjs";
 
 // Create a button in a door's header.
 Hooks.on("getWallConfigHeaderButtons", (config, buttons) => {
-  const isDoor = config.object.door !== CONST.WALL_DOOR_TYPES.NONE;
-  if (!isDoor) return;
+  if (config.document.door === CONST.WALL_DOOR_TYPES.NONE) return;
 
   buttons.unshift({
     class: MODULE,
     icon: "fa-solid fa-door-open",
-    onclick: () => new DoorMacroConfig(config.object).render(true)
+    onclick: () => new DoorMacroConfig(config.document).render(true)
   });
 });
 
@@ -24,19 +23,30 @@ Hooks.on("preUpdateWall", (wallDoc, update, context, userId) => {
   const {WALL_DOOR_STATES: DS, WALL_DOOR_TYPES: DOOR} = CONST;
 
   // ignore this if the Door type involves toggling between wall and door.
-  if (wallDoc.door === DOOR.NONE || update.door === DOOR.NONE) return;
+  if ((wallDoc.door === DOOR.NONE) || (update.door === DOOR.NONE)) return;
 
   const hasDS = foundry.utils.hasProperty(update, "ds");
   const hasDOOR = foundry.utils.hasProperty(update, "door");
 
+  const wasSecret = wallDoc.door === DOOR.SECRET;
+  const toSecret = update.door === DOOR.SECRET;
+
+  const wasLocked = wallDoc.ds === DS.LOCKED;
+  const toLocked = update.ds === DS.LOCKED;
+
+  const wasOpen = wallDoc.ds === DS.OPEN;
+  const toOpen = update.ds === DS.OPEN;
+  const toClosed = update.ds === DS.CLOSED;
+
+
   context[MODULE] = {
     [wallDoc.id]: {
-      whenClosed: (wallDoc.ds === DS.OPEN) && (hasDS && (update.ds === DS.CLOSED)),
-      whenOpened: (wallDoc.ds !== DS.OPEN) && (hasDS && (update.ds === DS.OPEN)),
-      whenHidden: (wallDoc.door !== DOOR.SECRET) && (hasDOOR && (update.door === DOOR.SECRET)),
-      whenRevealed: (wallDoc.door === DOOR.SECRET) && (hasDOOR && (update.door !== DOOR.SECRET)),
-      whenLocked: (wallDoc.ds !== DS.LOCKED) && (hasDS && (update.ds === DS.LOCKED)),
-      whenUnlocked: (wallDoc.ds === DS.LOCKED) && (hasDS && (update.ds !== DS.LOCKED))
+      whenClosed: wasOpen && toClosed,
+      whenOpened: !wasOpen && toOpen,
+      whenHidden: !wasSecret && toSecret,
+      whenRevealed: wasSecret && (hasDOOR && !toSecret),
+      whenLocked: !wasLocked && toLocked,
+      whenUnlocked: wasLocked && (hasDS && !toLocked)
     }
   }
 });
