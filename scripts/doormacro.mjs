@@ -10,9 +10,9 @@ import {MODULE, TRIGGERS} from "./constants.mjs";
  */
 export function callMacro(wallDoc, trigger, {gmId, userId}) {
   const data = wallDoc.flags[MODULE]?.[trigger] ?? {};
-  if (!data.script) return;
+  if (!data.command) return;
   const body = `(async()=>{
-    ${data.script}
+    ${data.command}
   })();`;
 
   const id = data.asGM ? gmId : userId;
